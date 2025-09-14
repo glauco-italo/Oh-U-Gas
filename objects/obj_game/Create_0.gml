@@ -1,0 +1,1 @@
+audio_play_sound(cidade_sound,1,true)
