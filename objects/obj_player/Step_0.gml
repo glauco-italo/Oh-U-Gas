@@ -7,33 +7,26 @@ if (keyboard_check(ord("D")) || keyboard_check(ord("A"))) {
     }
 }
 
-// Lógica para detectar se um cliente está próximo e preparar a negociação
+// NOVO: Lógica para parar o movimento instantaneamente ao encontrar um cliente
 var cliente_proximo = instance_exists(obj_comprador) && (distance_to_object(obj_comprador) < raio_colisao);
-
-if (cliente_proximo && !pronto_para_negociar) {
-    pronto_para_negociar = true;
-    
+if (cliente_proximo && estado_jogo == estado.movendo) {
     // Para o som, a velocidade da moto e do fundo
-    audio_stop_all();
+   
     velocidade_atual = 0;
     global.velocidade_fundo = 0;
+    
+    // Altera o estado do jogo para negociar
+    estado_jogo = estado.negociando;
 }
 
-// Lógica para detectar se o posto está próximo
-var posto_proximo = instance_exists(obj_posto) && (distance_to_object(obj_posto) < raio_colisao);
+// Lógica para detectar se o fundo do posto está próximo
+var fundo_posto_proximo = instance_exists(obj_fundo) && (distance_to_object(obj_fundo) < raio_colisao) && obj_fundo.is_posto;
 
-if (cliente_proximo && !pronto_para_negociar) {
-    pronto_para_negociar = true;
-    audio_stop_all();
-    velocidade_atual = 0;
-    global.velocidade_fundo = 0;
-}
-
-// NOVO: Prepara o abastecimento
-if (posto_proximo && keyboard_check_pressed(vk_space) && estado_jogo == estado.movendo) {
+// Prepara o abastecimento se o fundo do posto estiver próximo
+if (fundo_posto_proximo && keyboard_check_pressed(vk_space) && estado_jogo == estado.movendo) {
     if (carteira >= custo_abastecimento) {
         estado_jogo = estado.abastecendo;
-        audio_stop_all();
+        
     } else {
         show_message("Voce nao tem dinheiro suficiente para abastecer!");
     }
@@ -47,11 +40,6 @@ if (tanque_combustivel <= 0) {
     audio_stop_all();
     
     room_goto(rm_game_over);
-}
-
-// AQUI ESTÁ A CORREÇÃO: se estiver pronto para negociar, muda de estado ao apertar ESPAÇO
-if (pronto_para_negociar && keyboard_check_pressed(vk_space)) {
-    estado_jogo = estado.negociando;
 }
 
 // Lógica de controle principal do jogo com base nos estados

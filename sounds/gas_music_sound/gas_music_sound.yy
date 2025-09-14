@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"gas_music_sound",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":0,
+  "conversionMode":0,
+  "duration":120.186485,
+  "name":"gas_music_sound",
+  "parent":{
+    "name":"Sons",
+    "path":"folders/Sons.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"gas_music_sound.mp3",
+  "type":1,
+  "volume":1.0,
+}
