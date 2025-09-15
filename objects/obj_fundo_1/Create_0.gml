@@ -1,4 +1,6 @@
-// Velocidade do fundo (positiva = esquerda, negativa = direita)
+// obj_fundo: evento Create
+
+// Velocidade do fundo
 global.velocidade_fundo = 4;
 
 // Define o sprite inicial
@@ -8,3 +10,4 @@ sprite_index = spr_fundo_normal;
 sprite_alternado = false;
 chance_posto = 0.1;
 is_posto = false;
+is_deposito = false;

@@ -13,6 +13,8 @@ enum estado {
     negociando,
     resultado_negociacao,
     abastecendo,
+    comprando_butijao,
+    game_over,
 }
 
 // Variável para o estado atual
@@ -53,7 +55,7 @@ velocidade_atual = 0; // A velocidade atual do player
 
 // Variáveis do tanque de combustível
 tanque_combustivel = 100; // Começa com 100 de combustível
-consumo_combustivel = 0.05; // O quanto de combustível é gasto por passo (ajuste para a sua preferência)
+consumo_combustivel = 0.03; // O quanto de combustível é gasto por passo (ajuste para a sua preferência)
 
 pronto_para_negociar = false; // Começa como falso
 raio_colisao = 500; // Ajuste este valor. É a distância que o player precisa estar do cliente.
@@ -62,3 +64,9 @@ timer_resultado = 0;  // Timer para controlar a exibição da mensagem
 
 taxa_abastecimento = 1; // Quantidade de gasolina adicionada por passo
 custo_abastecimento = 0.5; // Custo por passo
+custo_abastecimento = 10;
+preco_por_litro = 0.5; // O preço de cada "litro" de gasolina
+
+tem_butijao = true;
+sprite_index = spr_butijao_1;
+custo_butijao = 10;

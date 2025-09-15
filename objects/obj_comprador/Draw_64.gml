@@ -1,5 +1,5 @@
 // Evento Draw GUI do obj_comprador
-
+x -= global.velocidade_fundo;
 // Desenha a mensagem de negociação ou resultado se a flag estiver ativada
 if (obj_player.pronto_para_negociar) {
     // --- NOVO: Desenha a caixa de fundo da mensagem ---

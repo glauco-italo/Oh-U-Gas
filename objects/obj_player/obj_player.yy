@@ -34,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_moto",
-    "path":"sprites/spr_moto/spr_moto.yy",
+    "name":"spr_sem_butijao",
+    "path":"sprites/spr_sem_butijao/spr_sem_butijao.yy",
   },
   "spriteMaskId":null,
   "visible":true,
