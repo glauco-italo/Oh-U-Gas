@@ -1,16 +1,15 @@
 {
   "$GMObject":"",
-  "%Name":"obj_controlador_fundo",
+  "%Name":"obj_deposito_local",
   "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_controlador_fundo",
+  "name":"obj_deposito_local",
   "overriddenProperties":[],
   "parent":{
-    "name":"Fundo",
-    "path":"folders/Objetos/Fundo.yy",
+    "name":"Deposito",
+    "path":"folders/Objetos/Deposito.yy",
   },
   "parentObjectId":null,
   "persistent":false,

@@ -1,70 +1,67 @@
+// Evento Step do obj_fundo
+
 // Move o fundo
 x -= global.velocidade_fundo;
 
-// Verifique se o fundo saiu da tela
+// --- Verifique se o fundo saiu da tela para reciclar ---
 if (x <= -sprite_width) {
-    x += sprite_width * 2;
-} else if (x >= room_width) {
-    x -= sprite_width * 2;
+    // Recicla o fundo para o lado DIREITO (movendo para a direita)
+    x += sprite_width * 2;
+    var reciclar_esquerda = false;
+}
+else if (x >= room_width) {
+    // Recicla o fundo para o lado ESQUERDO (movendo para a esquerda)
+    x -= sprite_width * 2;
+    var reciclar_esquerda = true;
 } else {
-    // Se não saiu da tela, nada a fazer
-    exit;
+    // Se não saiu da tela, nada a fazer
+    exit;
 }
 
-// --- CHECAGEM DE POSTO E DEPÓSITO ---
-var is_posto_visivel = false;
-var is_deposito_visivel = false;
+// O código abaixo só roda quando o fundo é reciclado (quando o 'exit' não é ativado)
 
-with (obj_fundo) {
-    if (is_posto) is_posto_visivel = true;
-    if (is_deposito) is_deposito_visivel = true;
-}
+// Resetar todas as flags para evitar bugs de estados
+is_posto = false;
+is_deposito = false;
+is_cliente = false;
 
 // --- SORTEIO DE ELEMENTOS ---
-// chances base
-var chance_posto     = 10;
-var chance_deposito  = 5;
-var chance_fundo     = 85;
+var chance_posto = 17;
+var chance_deposito = 5;
+var chance_cliente = 20;
 
-// Se o player não tem gás → aumenta chance de depósito
 if (instance_exists(obj_player) && !obj_player.tem_butijao) {
-    chance_deposito = 40; // antes era 5
-    chance_posto    = 10; // mantém
-    chance_fundo    = 50; // reduz pra equilibrar
+    chance_deposito = 40;
+    chance_posto = 10;
 }
 
-// Faz o sorteio proporcional
-var total = chance_posto + chance_deposito + chance_fundo;
-var sorteio = irandom_range(1, total);
+var sorteio = irandom_range(1, 100);
 
-// --- DEFINIÇÃO DO FUNDO ---
-if (!is_posto_visivel && !is_deposito_visivel) {
-    if (sorteio <= chance_posto) {
-        // POSTO
-        sprite_index = spr_posto;
-        is_posto = true;
-        is_deposito = false;
-        is_cliente = false;
-    }
-    else if (sorteio <= chance_posto + chance_deposito) {
-        // DEPÓSITO
-        sprite_index = spr_deposito;
-        is_deposito = true;
-        is_posto = false;
-        is_cliente = false;
-    }
-    else {
-        // FUNDO NORMAL
-        sprite_index = (random(1) < 0.5) ? spr_fundo_normal : spr_fundo_invertido;
-        is_cliente = false;
-        is_posto = false;
-        is_deposito = false;
-    }
+// ORDEM DE PRIORIDADE
+if (sorteio <= chance_deposito) {
+    // DEPÓSITO
+    sprite_index = spr_deposito;
+    is_deposito = true;
+    instance_create_layer(613,549,"Instances",obj_deposito_local);
+    instance_destroy(obj_posto_local);
+    show_debug_message("Deposito criado")
+    
+}
+else if (sorteio <= chance_deposito + chance_posto) {
+    // POSTO
+    sprite_index = spr_posto;
+    is_posto = true;
+    instance_create_layer(613,549,"Instances",obj_posto_local);
+    instance_destroy(obj_deposito_local)
+    show_debug_message("Posto Criado")
+}
+else if (sorteio <= chance_deposito + chance_posto + chance_cliente) {
+    // CLIENTE
+    sprite_index = (random(1) < 0.5) ? spr_fundo_normal : spr_fundo_invertido;
+    is_cliente = true;
+    // O comprador será criado por outra lógica (obj_controlador_compradores)
 }
 else {
-    // Se já existe um posto ou depósito visível → só fundo normal
-    sprite_index = (random(1) < 0.5) ? spr_fundo_normal : spr_fundo_invertido;
-    is_cliente = false;
-    is_posto = false;
-    is_deposito = false;
+    // FUNDO NORMAL
+    sprite_index = (random(1) < 0.5) ? spr_fundo_normal : spr_fundo_invertido;
 }

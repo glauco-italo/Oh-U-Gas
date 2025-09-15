@@ -65,7 +65,7 @@ timer_resultado = 0;  // Timer para controlar a exibição da mensagem
 taxa_abastecimento = 1; // Quantidade de gasolina adicionada por passo
 custo_abastecimento = 0.5; // Custo por passo
 custo_abastecimento = 10;
-preco_por_litro = 0.5; // O preço de cada "litro" de gasolina
+preco_por_litro = 0.2; // O preço de cada "litro" de gasolina
 
 tem_butijao = true;
 sprite_index = spr_butijao_1;

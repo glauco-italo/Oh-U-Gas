@@ -9,8 +9,8 @@
   "name":"obj_fundo",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objetos",
-    "path":"folders/Objetos.yy",
+    "name":"Fundo",
+    "path":"folders/Objetos/Fundo.yy",
   },
   "parentObjectId":null,
   "persistent":false,

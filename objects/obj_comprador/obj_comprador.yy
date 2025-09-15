@@ -10,8 +10,8 @@
   "name":"obj_comprador",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objetos",
-    "path":"folders/Objetos.yy",
+    "name":"Cliente",
+    "path":"folders/Objetos/Cliente.yy",
   },
   "parentObjectId":null,
   "persistent":false,

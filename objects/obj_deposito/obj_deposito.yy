@@ -6,8 +6,8 @@
   "name":"obj_deposito",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objetos",
-    "path":"folders/Objetos.yy",
+    "name":"Deposito",
+    "path":"folders/Objetos/Deposito.yy",
   },
   "parentObjectId":null,
   "persistent":false,

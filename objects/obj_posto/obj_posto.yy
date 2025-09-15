@@ -9,8 +9,8 @@
   "name":"obj_posto",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objetos",
-    "path":"folders/Objetos.yy",
+    "name":"Posto",
+    "path":"folders/Objetos/Posto.yy",
   },
   "parentObjectId":null,
   "persistent":false,
