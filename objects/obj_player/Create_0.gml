@@ -15,13 +15,14 @@ enum estado {
     abastecendo,
     comprando_butijao,
     game_over,
+    
 }
 
 // Variável para o estado atual
 estado_jogo = estado.movendo;
 
 // Carteira do jogador
-carteira = 0;
+global.carteira = 0;
 
 
 // Define a velocidade vertical do jogador

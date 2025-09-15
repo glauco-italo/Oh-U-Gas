@@ -67,6 +67,18 @@ if (deposito_proximo != noone && distance_to_object(deposito_proximo) < raio_col
     global.velocidade_fundo = 0;
     estado_jogo = estado.comprando_butijao;
 }
+    
+// Interação para ENTRAR no Depósito (tecla F)
+if (deposito_proximo != noone && distance_to_object(deposito_proximo) < raio_colisao && keyboard_check_pressed(ord("F"))) {
+    // Transfere todo o dinheiro da carteira para o cofre
+        global.carteira = global.carteira;
+    global.deve_perguntar_dinheiro = true;
+    
+    // Vai para a sala do depósito
+    audio_stop_all();
+    room_goto(rm_deposito_interior);
+    show_debug_message("Entrando no depósito. Dinheiro transferido para o cofre.");
+}
 
 // Lógica de detecção de cliente separada, já que não precisa do 'space'
 var cliente_proximo = instance_nearest(x, y, obj_comprador);
@@ -122,7 +134,7 @@ if (cliente_proximo != noone && distance_to_object(cliente_proximo) < raio_colis
         
         if (keyboard_check_pressed(ord("D")) || keyboard_check_pressed(ord("A"))) {
             if (aceitou) {
-                carteira += valor_venda;
+                global.carteira += valor_venda;
                 texto_resultado = "O cliente aceitou! Voce ganhou R$ " + string(valor_venda) + "!";
                 sprite_index = spr_sem_butijao;
                 tem_butijao = false;
@@ -149,9 +161,9 @@ if (cliente_proximo != noone && distance_to_object(cliente_proximo) < raio_colis
             var falta_gasolina = 100 - tanque_combustivel;
             var custo_total = falta_gasolina * preco_por_litro;
 
-            if (carteira >= custo_total) {
+            if (global.carteira >= custo_total) {
                 tanque_combustivel = 100;
-                carteira -= custo_total;
+                global.carteira -= custo_total;
                 show_message("Tanque cheio! Voce pagou R$" + string(custo_total) + ". Pressione ESC para sair.");
             } else {
                 show_message("Voce nao tem dinheiro suficiente para encher o tanque! Custo: R$" + string(custo_total));
@@ -165,8 +177,8 @@ if (cliente_proximo != noone && distance_to_object(cliente_proximo) < raio_colis
     case estado.comprando_butijao:
         if (keyboard_check_pressed(ord("A"))) {
             if (!tem_butijao) {
-                if (carteira >= custo_butijao) {
-                    carteira -= custo_butijao;
+                if (global.carteira >= custo_butijao) {
+                    global.carteira -= custo_butijao;
                     sprite_index = spr_butijao_1;
                     tem_butijao = true;
                     show_message("Voce comprou um novo butijao! Pressione ESC para sair.");

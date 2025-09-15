@@ -35,3 +35,11 @@ if (obj_player.tanque_combustivel > 0) {
         timer_comprador = irandom_range(tempo_min_passos, tempo_max_passos);
     }
 }
+
+if (instance_nearest(x,y,obj_posto_local)){
+    timer_comprador--;
+}
+
+if (instance_nearest(x,y,obj_deposito_local)){
+    timer_comprador--;
+}
