@@ -72,5 +72,7 @@ tem_butijao = true;
 sprite_index = spr_butijao_1;
 custo_butijao = 10;
 
-// No Evento Create do obj_player
+// Interacão
+
+pode_interagir_agora = noone;
 

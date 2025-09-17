@@ -10,15 +10,15 @@ var altura_combustivel = (tanque_combustivel / 100) * (y2 - y1);
 var y_combustivel = y2 - altura_combustivel;
 
 draw_set_color(c_white);
-draw_roundrect(x1, y1, x2, y2, false); // Borda arredondada
+draw_roundrect(x1, y1, x2, y2, false); 
 draw_set_color(c_black);
-draw_roundrect(x1, y1, x2, y2, true); // Fundo preto
+draw_roundrect(x1, y1, x2, y2, true);
 
 draw_set_color(c_green);
 if (tanque_combustivel < 30) {
-    draw_set_color(c_red);
+    draw_set_color(c_red);
 }
-draw_roundrect_ext(x1, y_combustivel, x2, y2, 8, 8, false); // Borda arredondada preenchida
+draw_roundrect_ext(x1, y_combustivel, x2, y2, 8, 8, false);
 
 draw_set_color(c_white);
 draw_set_font(fnt_tanque);
@@ -31,30 +31,24 @@ var carteira_y = 300;
 var carteira_largura = 200;
 var carteira_altura = 30;
 
-// Desenha a caixa de fundo da carteira
 draw_set_color(c_black);
 draw_roundrect_ext(carteira_x, carteira_y, carteira_x + carteira_largura, carteira_y + carteira_altura, 10, 10, false);
 draw_set_color(c_white);
 draw_roundrect_ext(carteira_x, carteira_y, carteira_x + carteira_largura, carteira_y + carteira_altura, 10, 10, true);
 
-// Desenha o texto da carteira
 draw_set_font(fnt_carteira);
 draw_set_color(c_yellow);
 draw_set_halign(fa_left);
 draw_text(carteira_x + 10, carteira_y + 15, "Carteira: R$ " + string(global.carteira));
 
-// === Lógica de mensagens centralizadas com caixas arredondadas ===
+// === Lógica de mensagens centralizadas ===
 
-// Novas coordenadas para a resolução de 330x180
-var msg_x = 675 // Metade de 330
-var msg_y = 250; // Metade de 180
+var msg_x = 675;
+var msg_y = 250;
 var msg_largura = 400;
 var msg_altura = 180;
 
-// Desenha a caixa de mensagem
-if (estado_jogo == estado.negociando || estado_jogo == estado.resultado_negociacao ||
-    estado_jogo == estado.abastecendo || estado_jogo == estado.comprando_butijao)
-{
+if (estado_jogo != estado.movendo) {
     draw_set_color(c_black);
     draw_roundrect_ext(msg_x - msg_largura / 2, msg_y - msg_altura / 2, msg_x + msg_largura / 2, msg_y + msg_altura / 2, 20, 20, false);
     draw_set_color(c_white);
@@ -66,7 +60,6 @@ draw_set_valign(fa_middle);
 draw_set_font(fnt_carteira);
 draw_set_color(c_white);
 
-// Mensagens por estado
 switch (estado_jogo) {
     case estado.negociando:
         if (tem_butijao) {
@@ -99,97 +92,30 @@ switch (estado_jogo) {
         break;
 }
 
-// Lógica de Detecção de Proximidade
-
-var posto_encontrado = noone;
-var deposito_encontrado = noone;
-var num_fundos = instance_number(obj_fundo);
-
-for (var i = 0; i < num_fundos; i++) {
-    var fundo_atual = instance_find(obj_fundo, i);
-    if (fundo_atual.is_posto == true) {
-        posto_encontrado = fundo_atual;
-    }
-    if (fundo_atual.is_deposito == true) {
-        deposito_encontrado = fundo_atual;
-    }
-}
-
-// Caixa de Diálogo de Interação (NOVA)
-var posto_encontrado = noone;
-var deposito_encontrado = noone;
-var num_fundos = instance_number(obj_fundo);
-
-for (var i = 0; i < num_fundos; i++) {
-    var fundo_atual = instance_find(obj_fundo, i);
-    if (fundo_atual.is_posto == true) {
-        posto_encontrado = fundo_atual;
-    }
-    if (fundo_atual.is_deposito == true) {
-        deposito_encontrado = fundo_atual;
-    }
-}
-
-if (instance_exists(posto_encontrado) && distance_to_object(posto_encontrado) < raio_colisao && estado_jogo == estado.movendo) {
-    var msg_x = 675;
-    var msg_y = 150;
-    var msg_largura = 350;
-    var msg_altura = 100;
+// === Mensagem de Interação (CORRIGIDA) ===
+// AQUI ESTÁ A SOLUÇÃO: Verificamos se a instância ainda existe ANTES de acessá-la.
+if (pode_interagir_agora != noone && instance_exists(pode_interagir_agora) && estado_jogo == estado.movendo) {
+    var msg_y_interacao = 150;
+    var msg_largura_interacao = 350;
+    var msg_altura_interacao = 100;
+    var texto_interacao = "";
+    var msg_x_interacao = 675;
 
     draw_set_color(c_black);
-    draw_roundrect_ext(msg_x - msg_largura / 2, msg_y - msg_altura / 2, msg_x + msg_largura / 2, msg_y + msg_altura / 2, 20, 20, false);
+    draw_roundrect_ext(msg_x_interacao - msg_largura_interacao / 2, msg_y_interacao - msg_altura_interacao / 2, msg_x_interacao + msg_largura_interacao / 2, msg_y_interacao + msg_altura_interacao / 2, 20, 20, false);
     draw_set_color(c_white);
-    draw_roundrect_ext(msg_x - msg_largura / 2, msg_y - msg_altura / 2, msg_x + msg_largura / 2, msg_y + msg_altura / 2, 20, 20, true);
+    draw_roundrect_ext(msg_x_interacao - msg_largura_interacao / 2, msg_y_interacao - msg_altura_interacao / 2, msg_x_interacao + msg_largura_interacao / 2, msg_y_interacao + msg_altura_interacao / 2, 20, 20, true);
 
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
     draw_set_font(fnt_estabelecimento);
     draw_set_color(c_white);
 
-    draw_text(msg_x, msg_y, "Aperte ESPACO para \nentrar no posto!");
-    
-} else if (instance_exists(deposito_encontrado) && distance_to_object(deposito_encontrado) < raio_colisao && estado_jogo == estado.movendo) {
-    var msg_x = 675;
-    var msg_y = 150;
-    var msg_largura = 350;
-    var msg_altura = 100;
-
-    draw_set_color(c_black);
-    draw_roundrect_ext(msg_x - msg_largura / 2, msg_y - msg_altura / 2, msg_x + msg_largura / 2, msg_y + msg_altura / 2, 20, 20, false);
-    draw_set_color(c_white);
-    draw_roundrect_ext(msg_x - msg_largura / 2, msg_y - msg_altura / 2, msg_x + msg_largura / 2, msg_y + msg_altura / 2, 20, 20, true);
-
-    draw_set_halign(fa_center);
-    draw_set_valign(fa_middle);
-    draw_set_font(fnt_estabelecimento);
-    draw_set_color(c_white);
-    
-    draw_text(msg_x, msg_y - 15, "Aperte ESPACO para comprar Gas");
-    draw_text(msg_x, msg_y + 15, "ou F para entrar no deposito!");
-}
-
-// === Adicionando a lógica de desenho do Comprador ===
-var comprador_proximo = instance_nearest(x, y, obj_comprador);
-if (comprador_proximo != noone && distance_to_object(comprador_proximo) < raio_colisao && estado_jogo == estado.movendo) {
-    // Definindo as coordenadas para a nova caixa de mensagem de negociação
-    var neg_msg_x = 120
-    var neg_msg_y = 120
-    var neg_msg_largura = 280;
-    var neg_msg_altura = 100;
-
-    // Desenha a caixa de fundo da mensagem
-    draw_set_color(c_black);
-    draw_set_alpha(0.7);
-    draw_roundrect_ext(neg_msg_x - neg_msg_largura/2, neg_msg_y - neg_msg_altura/2, neg_msg_x + neg_msg_largura/2, neg_msg_y + neg_msg_altura/2, 10, 10, false);
-    
-    // Volta para a opacidade total e cor branca para o texto
-    draw_set_alpha(1);
-    draw_set_color(c_white);
-    
-    draw_set_halign(fa_center);
-    draw_set_valign(fa_middle);
-    draw_set_font(fnt_carteira);
-    
-    draw_text(neg_msg_x, neg_msg_y - 20, "Cliente encontrado!");
-    draw_text(neg_msg_x, neg_msg_y + 10, "Aperte ESPACO para negociar.");
+    // O erro ocorria aqui. Agora, é seguro usar `pode_interagir_agora`
+    if (pode_interagir_agora.object_index == obj_posto_local) {
+        texto_interacao = "Aperte ESPACO para\nabastecer!";
+    } else if (pode_interagir_agora.object_index == obj_deposito_local) {
+        texto_interacao = "Aperte ESPACO para comprar Gas\nou F para entrar no deposito!";
+    }
+    draw_text(msg_x_interacao, msg_y_interacao, texto_interacao);
 }
