@@ -110,14 +110,23 @@ switch (estado_jogo) {
             }
         }
 
-        // Lógica de entrada no Depósito com 'F'
-        if (keyboard_check_pressed(ord("F"))) {
-            if (pode_interagir_agora != noone && pode_interagir_agora.object_index == obj_deposito_local) {
-                global.deve_perguntar_dinheiro = true;
-                audio_stop_all();
-                room_goto(rm_deposito_interior);
-            }
+       // Lógica de entrada no Depósito com 'F' (AGORA COM A JORNADA DE TRABALHO)
+if (keyboard_check_pressed(ord("F"))) {
+    if (pode_interagir_agora != noone && pode_interagir_agora.object_index == obj_deposito_local) {
+        // Se o turno estiver ativo, mostre uma mensagem de erro
+        if (global.turno_ativo == true) {
+            estado_jogo = estado.mensagem;
+            mensagem_atual = "O deposito esta fechado \ndurante o seu turno!";
+            velocidade_atual = 0;
+            global.velocidade_fundo = 0;
+        } else {
+            // Se o turno nao estiver ativo, permita a entrada
+            global.deve_perguntar_dinheiro = true;
+            audio_stop_all();
+            room_goto(rm_deposito_interior);
         }
+    }
+}
         break;
 
     // === Lógica de Negociação ===
@@ -193,9 +202,13 @@ switch (estado_jogo) {
             if (global.carteira >= custo_total) {
                 tanque_combustivel = 100;
                 global.carteira -= custo_total;
-                show_message("Tanque cheio! \nVoce pagou R$" + string(custo_total) + ". Pressione ESC para sair.");
+                // Substituído show_message por uma mudança de estado e texto
+                mensagem_atual = "Tanque cheio! \nVoce pagou R$" + string(custo_total) + ".";
+                estado_jogo = estado.mensagem;
             } else {
-                show_message("Voce nao tem dinheiro suficiente \n para encher o tanque! Custo: R$" + string(custo_total));
+                // Substituído show_message por uma mudança de estado e texto
+                mensagem_atual = "Voce nao tem dinheiro suficiente \npara encher o tanque! Custo: R$" + string(custo_total);
+                estado_jogo = estado.mensagem;
             }
         }
         if (keyboard_check_pressed(vk_escape)) {
@@ -211,7 +224,10 @@ switch (estado_jogo) {
                     global.carteira -= custo_butijao;
                     sprite_index = spr_butijao_1;
                     tem_butijao = true;
-                    show_message("Voce comprou um novo butijao! \nPressione ESC para sair.");
+                    // Substituído show_message por uma mudança de estado e texto
+                    mensagem_atual = "Voce comprou um novo butijao!";
+                    estado_jogo = estado.mensagem;
+                    
                     if (instance_exists(obj_controlador_compradores)) {
                         var controlador = instance_find(obj_controlador_compradores, 0);
                         if (controlador != noone) {
@@ -219,12 +235,23 @@ switch (estado_jogo) {
                         }
                     }
                 } else {
-                    show_message("Voce nao tem dinheiro \npara comprar o butijao!");
+                    // Substituído show_message por uma mudança de estado e texto
+                    mensagem_atual = "Voce nao tem dinheiro \npara comprar o butijao!";
+                    estado_jogo = estado.mensagem;
                 }
             } else {
-                show_message("Voce ja tem um butijao!");
+                // Substituído show_message por uma mudança de estado e texto
+                mensagem_atual = "Voce ja tem um butijao!";
+                estado_jogo = estado.mensagem;
             }
         }
+        if (keyboard_check_pressed(vk_escape)) {
+            estado_jogo = estado.movendo;
+        }
+        break;
+        
+    // === NOVO: Lógica de Exibição de Mensagem ===
+    case estado.mensagem:
         if (keyboard_check_pressed(vk_escape)) {
             estado_jogo = estado.movendo;
         }

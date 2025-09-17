@@ -42,7 +42,6 @@ draw_set_halign(fa_left);
 draw_text(carteira_x + 10, carteira_y + 15, "Carteira: R$ " + string(global.carteira));
 
 // === Lógica de mensagens centralizadas ===
-
 var msg_x = 675;
 var msg_y = 250;
 var msg_largura = 400;
@@ -90,7 +89,15 @@ switch (estado_jogo) {
         }
         draw_text(msg_x, msg_y + 35, "Pressione ESC para sair.");
         break;
+    
+     // === NOVO: Mensagem Dinâmica para Abastecer e Comprar Butijão ===
+    case estado.mensagem:
+        draw_text(msg_x, msg_y - 25, mensagem_atual);
+        draw_text(msg_x, msg_y + 35, "Pressione ESC para sair.");
+        break;
 }
+
+
 
 // === Mensagem de Interação (CORRIGIDA) ===
 // AQUI ESTÁ A SOLUÇÃO: Verificamos se a instância ainda existe ANTES de acessá-la.
@@ -118,4 +125,27 @@ if (pode_interagir_agora != noone && instance_exists(pode_interagir_agora) && es
         texto_interacao = "Aperte ESPACO para comprar Gas\nou F para entrar no deposito!";
     }
     draw_text(msg_x_interacao, msg_y_interacao, texto_interacao);
+
+}
+  // === Desenha o Timer da Jornada de Trabalho ===
+// AQUI ESTÁ A CORREÇÃO: Verificamos se o controlador existe antes de usá-lo.
+if (instance_exists(obj_game)) {
+    // Apenas desenha o timer se o turno estiver ativo
+    if (global.turno_ativo == true) {
+        var segundos_restantes = ceil(obj_game.timer_turno_trabalho / room_speed);
+        
+        var turno_x = 50;
+        var turno_y = 350;
+        var turno_largura = 150;
+        var turno_altura = 30;
+
+        draw_set_color(c_black);
+        draw_roundrect_ext(turno_x, turno_y, turno_x + turno_largura,turno_y + turno_altura, 10, 10, false);
+        draw_set_color(c_white);
+        draw_roundrect_ext(turno_x, turno_y, turno_x + turno_largura,turno_y + turno_altura, 10, 10, true);
+        draw_set_font(fnt_carteira);
+        draw_set_color(c_white);
+        
+        draw_text(115, 365, "Turno: " + string(segundos_restantes) + "s");
+    }
 }
