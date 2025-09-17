@@ -36,14 +36,14 @@ if (x <= -sprite_width || x >= room_width) {
         // DEPÓSITO
         sprite_index = spr_deposito;
         is_deposito = true;
-        instance_create_layer(613, 549, "Instances", obj_deposito_local);
+        instance_create_layer(173, 120, "Instances", obj_deposito_local);
         show_debug_message("Deposito criado");
     }
     else if (sorteio <= chance_deposito + chance_posto) {
         // POSTO
         sprite_index = spr_posto;
         is_posto = true;
-        instance_create_layer(613, 549, "Instances", obj_posto_local);
+        instance_create_layer(173, 120, "Instances", obj_posto_local);
         show_debug_message("Posto Criado");
     }
     else if (sorteio <= chance_deposito + chance_posto + chance_cliente) {

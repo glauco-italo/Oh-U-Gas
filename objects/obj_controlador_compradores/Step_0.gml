@@ -27,8 +27,8 @@ if (obj_player.tanque_combustivel > 0) {
         && !is_deposito_proximo // NOVO: Impede a criação perto do depósito
         && instance_number(obj_comprador) == 0) 
     {
-        var pos_x_fixa = 430;
-        var pos_y_fixa = 530;
+        var pos_x_fixa = 250;
+        var pos_y_fixa = 111;
 
         instance_create_layer(pos_x_fixa, pos_y_fixa, "Instances", obj_comprador);
 

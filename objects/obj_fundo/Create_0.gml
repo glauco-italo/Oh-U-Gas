@@ -1,7 +1,7 @@
 // obj_fundo: evento Create
 
 // Velocidade do fundo
-global.velocidade_fundo = 4;
+global.velocidade_fundo = 1;
 
 // Define o sprite inicial
 sprite_index = spr_fundo_normal;

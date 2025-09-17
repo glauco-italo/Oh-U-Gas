@@ -1,7 +1,7 @@
 // Evento Create do obj_player
 depth = -y;
 
-escala = 3; 
+escala = 1; 
 // Aplica a escala logo no início do jogo
 image_xscale = escala; 
 image_yscale = escala;
@@ -48,8 +48,8 @@ direcao_rotacao_pneu = 1; // Definida como persistente
 
 // Variáveis de aceleração e velocidade
 aceleracao = 0.1; // O quanto a velocidade aumenta a cada passo
-velocidade_maxima = 20; // A velocidade máxima para frente
-velocidade_minima = -20; // A velocidade máxima para trás
+velocidade_maxima = 10; // A velocidade máxima para frente
+velocidade_minima = -10; // A velocidade máxima para trás
 
 
 velocidade_atual = 0; // A velocidade atual do player
@@ -71,3 +71,4 @@ preco_por_litro = 0.2; // O preço de cada "litro" de gasolina
 tem_butijao = true;
 sprite_index = spr_butijao_1;
 custo_butijao = 10;
+

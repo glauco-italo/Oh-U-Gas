@@ -1,7 +1,15 @@
-// Se o jogador vender o botijão, essa instância é destruída em outro lugar (normal)
-// Mas se o tempo acabar e ele não foi atendido, ele vai embora sozinho
-if (tempo_espera > 0) {
-    tempo_espera--;
-} else {
-    instance_destroy(); // O comprador some
+// Evento Step do obj_comprador
+
+if (estado_comprador == "saindo") {
+    x += hspeed;
+    if (x < -100 || x > room_width + 100) {
+        instance_destroy();
+    }
+} else if (estado_comprador == "esperando") {
+    if (tempo_espera > 0) {
+        tempo_espera--;
+    } else {
+        instance_destroy();
+    }
 }
+// NÃO FAÇA NADA NO ESTADO "AGUARDANDO"

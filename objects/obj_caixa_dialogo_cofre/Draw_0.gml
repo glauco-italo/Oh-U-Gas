@@ -18,8 +18,8 @@ draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 
 // Desenha a pergunta e o valor da carteira (usando a variável global correta)
-draw_text(box_x, box_y - 20, "Você quer guardar os R$" + string(global.carteira) + " da corrida?");
-
+draw_text(box_x, box_y - 35, "Voce quer guardar os R$" + string(global.carteira));
+draw_text(box_x, box_y - 10, " da corrida?");
 // Desenha os botões
 // 'Sim'
 var sim_x = box_x - 50;

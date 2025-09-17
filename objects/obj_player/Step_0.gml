@@ -11,14 +11,14 @@ switch (estado_jogo) {
         }
         if (tanque_combustivel > 0) {
             var direcao_input = 0;
-            
+            
             if (keyboard_check(ord("D"))) {
                 direcao_input = 1;
             }
             if (keyboard_check(ord("A"))) {
                 direcao_input = -1;
             }
-            
+            
             if (keyboard_check(ord("D")) || keyboard_check(ord("A"))) {
                 if (!audio_is_playing(moto_sound)) {
                     audio_play_sound(moto_sound, 0, true);
@@ -29,19 +29,24 @@ switch (estado_jogo) {
                 }
             }
 
-            velocidade_atual = lerp(velocidade_atual, velocidade_maxima * direcao_input, aceleracao);
+            // NOVO: Acelera instantaneamente se a velocidade for zero
+            if (velocidade_atual == 0) {
+                velocidade_atual = velocidade_maxima * direcao_input;
+            } else {
+                velocidade_atual = lerp(velocidade_atual, velocidade_maxima * direcao_input, aceleracao);
+            }
         } else {
             velocidade_atual = lerp(velocidade_atual, 0, aceleracao);
         }
-        
+        
         var velocidade_rotacao_atual = 0;
         if (keyboard_check(ord("D"))) {
-            image_xscale = 1 * escala; 
+            image_xscale = 1 * escala; 
             image_yscale = escala;
             velocidade_rotacao_atual = velocidade_rotacao_pneu;
         }
         else if (keyboard_check(ord("A"))) {
-            image_xscale = -1 * escala; 
+            image_xscale = -1 * escala; 
             image_yscale = escala;
             velocidade_rotacao_atual = velocidade_rotacao_pneu * -1;
         }
@@ -49,69 +54,49 @@ switch (estado_jogo) {
 
         velocidade_atual = clamp(velocidade_atual, velocidade_minima, velocidade_maxima);
         global.velocidade_fundo = velocidade_atual;
-        
-       // Lógica de detecção consolidada
-var posto_proximo = instance_nearest(x, y, obj_posto_local);
-var deposito_proximo = instance_nearest(x, y, obj_deposito_local);
-
-// Garante que há um posto próximo e que a distância é menor que a de colisão
-if (posto_proximo != noone && distance_to_object(posto_proximo) < raio_colisao && keyboard_check_pressed(vk_space)) {
-    velocidade_atual = 0;
-    global.velocidade_fundo = 0;
-    estado_jogo = estado.abastecendo;
-}
-
-// Garante que há um depósito próximo e que a distância é menor que a de colisão
-if (deposito_proximo != noone && distance_to_object(deposito_proximo) < raio_colisao && keyboard_check_pressed(vk_space)) {
-    velocidade_atual = 0;
-    global.velocidade_fundo = 0;
-    estado_jogo = estado.comprando_butijao;
-}
     
-// Interação para ENTRAR no Depósito (tecla F)
-if (deposito_proximo != noone && distance_to_object(deposito_proximo) < raio_colisao && keyboard_check_pressed(ord("F"))) {
-    // Transfere todo o dinheiro da carteira para o cofre
-        global.carteira = global.carteira;
-    global.deve_perguntar_dinheiro = true;
-    
-    // Vai para a sala do depósito
-    audio_stop_all();
-    room_goto(rm_deposito_interior);
-    show_debug_message("Entrando no depósito. Dinheiro transferido para o cofre.");
-}
-
-// Lógica de detecção de cliente separada, já que não precisa do 'space'
-var cliente_proximo = instance_nearest(x, y, obj_comprador);
-if (cliente_proximo != noone && distance_to_object(cliente_proximo) < raio_colisao) {
-    velocidade_atual = 0;
-    global.velocidade_fundo = 0;
-    estado_jogo = estado.negociando;
-}
-
-
-        
-        // Lógica de detecção de cliente separada, já que não precisa do 'space'
-        var cliente_proximo = instance_exists(obj_comprador) && (distance_to_object(obj_comprador) < raio_colisao);
-        if (cliente_proximo) {
-            velocidade_atual = 0;
-            global.velocidade_fundo = 0;
-            estado_jogo = estado.negociando;
-            break;
+         // Lógica de detecção de cliente para iniciar negociação
+        var cliente_proximo = instance_nearest(x, y, obj_comprador);
+        if (cliente_proximo != noone && distance_to_object(cliente_proximo) < raio_colisao) {
+            if (tem_butijao) {
+                velocidade_atual = 0;
+                global.velocidade_fundo = 0;
+                estado_jogo = estado.negociando;
+            } else {
+                velocidade_atual = 0;
+                global.velocidade_fundo = 0;
+            }
         }
+        // Lógica de detecção para entrar no posto
+        var posto_proximo = instance_nearest(x, y, obj_posto_local);
+        if (posto_proximo != noone && distance_to_object(posto_proximo) < raio_colisao && keyboard_check_pressed(vk_space)) {
+            velocidade_atual = 0;
+            global.velocidade_fundo = 0;
+            estado_jogo = estado.abastecendo;
+        }
 
-        break; // Termina o caso 'movendo'
-    
+        // Lógica de detecção para entrar no deposito
+        var deposito_proximo = instance_nearest(x, y, obj_deposito_local);
+        if (deposito_proximo != noone && distance_to_object(deposito_proximo) < raio_colisao) {
+            if (keyboard_check_pressed(vk_space)) { // Interação para comprar gás
+                velocidade_atual = 0;
+                global.velocidade_fundo = 0;
+                estado_jogo = estado.comprando_butijao;
+            }
+            // Interação para ENTRAR no Depósito (tecla F)
+            if (keyboard_check_pressed(ord("F"))) {
+                global.deve_perguntar_dinheiro = true;
+                audio_stop_all();
+                room_goto(rm_deposito_interior);
+            }
+        }
+        break; // Termina o caso 'movendo'
     // Resto do seu código
     case estado.negociando:
         if (!tem_butijao && keyboard_check_pressed(vk_escape)) {
             estado_jogo = estado.movendo;
             break;
         }
-
-        if (!tem_butijao) {
-            break;
-        }
-
         var valor_venda = 0;
         var chance_aceite = 0;
         var aceitou = false;
@@ -123,7 +108,7 @@ if (cliente_proximo != noone && distance_to_object(cliente_proximo) < raio_colis
                 aceitou = true;
             }
         }
-        
+        
         if (keyboard_check_pressed(ord("A"))) {
             valor_venda = 20;
             chance_aceite = 0.8;
@@ -131,31 +116,43 @@ if (cliente_proximo != noone && distance_to_object(cliente_proximo) < raio_colis
                 aceitou = true;
             }
         }
-        
+        
         if (keyboard_check_pressed(ord("D")) || keyboard_check_pressed(ord("A"))) {
-            if (aceitou) {
-                global.carteira += valor_venda;
-                texto_resultado = "O cliente aceitou! Voce ganhou R$ " + string(valor_venda) + "!";
-                sprite_index = spr_sem_butijao;
-                tem_butijao = false;
-            } else {
-                texto_resultado = "O cliente nao aceitou. Voce nao ganhou nada.";
-            }
-            
-            estado_jogo = estado.resultado_negociacao;
-            timer_resultado = 120;
-        }
+    if (aceitou) {
+        global.carteira += valor_venda;
+        texto_resultado = "O cliente aceitou! \n Voce ganhou R$ " + string(valor_venda) + "!";
+        sprite_index = spr_sem_butijao;
+        tem_butijao = false;
+        
+        var comprador_vendido = instance_nearest(x, y, obj_comprador);
+        if (comprador_vendido != noone) {
+            comprador_vendido.sprite_index = spr_comprador_butijao_1;
+            comprador_vendido.estado_comprador = "saindo";
+
+            // NOVO: Define a direção de saída do comprador com base na tecla pressionada
+            if (keyboard_check_pressed(ord("D"))) {
+                comprador_vendido.hspeed = -2; // Anda para a esquerda (oposto ao 'D')
+            } else if (keyboard_check_pressed(ord("A"))) {
+                comprador_vendido.hspeed = 2; // Anda para a direita (oposto ao 'A')
+            }
+        }
+    } else {
+        texto_resultado = "O cliente nao aceitou. \n Voce nao ganhou nada.";
+    }
+    
+    estado_jogo = estado.resultado_negociacao;
+    timer_resultado = 120;
+}
         break;
 
     case estado.resultado_negociacao:
         timer_resultado--;
-        
+        
         if (timer_resultado <= 0) {
-            instance_destroy(obj_comprador);
             estado_jogo = estado.movendo;
         }
         break;
-    
+    
     case estado.abastecendo:
         if (keyboard_check_pressed(ord("D"))) {
             var falta_gasolina = 100 - tanque_combustivel;
@@ -164,9 +161,9 @@ if (cliente_proximo != noone && distance_to_object(cliente_proximo) < raio_colis
             if (global.carteira >= custo_total) {
                 tanque_combustivel = 100;
                 global.carteira -= custo_total;
-                show_message("Tanque cheio! Voce pagou R$" + string(custo_total) + ". Pressione ESC para sair.");
+                show_message("Tanque cheio! \nVoce pagou R$" + string(custo_total) + ". Pressione ESC para sair.");
             } else {
-                show_message("Voce nao tem dinheiro suficiente para encher o tanque! Custo: R$" + string(custo_total));
+                show_message("Voce nao tem dinheiro suficiente \n para encher o tanque! Custo: R$" + string(custo_total));
             }
         }
         if (keyboard_check_pressed(vk_escape)) {
@@ -181,9 +178,7 @@ if (cliente_proximo != noone && distance_to_object(cliente_proximo) < raio_colis
                     global.carteira -= custo_butijao;
                     sprite_index = spr_butijao_1;
                     tem_butijao = true;
-                    show_message("Voce comprou um novo butijao! Pressione ESC para sair.");
-                    
-                    // NOVO: Resetar o timer de aparição do comprador
+                    show_message("Voce comprou um novo butijao! \nPressione ESC para sair.");
                     if (instance_exists(obj_controlador_compradores)) {
                         var controlador = instance_find(obj_controlador_compradores, 0);
                         if (controlador != noone) {
@@ -191,7 +186,7 @@ if (cliente_proximo != noone && distance_to_object(cliente_proximo) < raio_colis
                         }
                     }
                 } else {
-                    show_message("Voce nao tem dinheiro para comprar o butijao!");
+                    show_message("Voce nao tem dinheiro \npara comprar o butijao!");
                 }
             } else {
                 show_message("Voce ja tem um butijao!");
