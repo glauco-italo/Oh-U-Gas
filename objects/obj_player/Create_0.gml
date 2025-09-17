@@ -59,7 +59,7 @@ tanque_combustivel = 100; // Começa com 100 de combustível
 consumo_combustivel = 0.03; // O quanto de combustível é gasto por passo (ajuste para a sua preferência)
 
 pronto_para_negociar = false; // Começa como falso
-raio_colisao = 500; // Ajuste este valor. É a distância que o player precisa estar do cliente.
+raio_colisao = 550; // Ajuste este valor. É a distância que o player precisa estar do cliente.
 texto_resultado = ""; // Variável para armazenar a mensagem do resultado
 timer_resultado = 0;  // Timer para controlar a exibição da mensagem
 
@@ -71,4 +71,6 @@ preco_por_litro = 0.2; // O preço de cada "litro" de gasolina
 tem_butijao = true;
 sprite_index = spr_butijao_1;
 custo_butijao = 10;
+
+// No Evento Create do obj_player
 
