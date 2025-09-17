@@ -1,23 +1,25 @@
 {
   "$GMRoom":"v1",
-  "%Name":"rm_deposito_interior",
+  "%Name":"rm_cofre",
   "creationCodeFile":"",
   "inheritCode":false,
   "inheritCreationOrder":false,
   "inheritLayers":false,
   "instanceCreationOrder":[
-    {"name":"inst_405C79BA","path":"rooms/rm_deposito_interior/rm_deposito_interior.yy",},
-    {"name":"inst_18C7DC47","path":"rooms/rm_deposito_interior/rm_deposito_interior.yy",},
+    {"name":"inst_405C79BA_1","path":"rooms/rm_cofre/rm_cofre.yy",},
+    {"name":"inst_99BF5CD","path":"rooms/rm_cofre/rm_cofre.yy",},
+    {"name":"inst_79E403A7","path":"rooms/rm_cofre/rm_cofre.yy",},
   ],
   "isDnd":false,
   "layers":[
     {"$GMRInstanceLayer":"","%Name":"Instances","depth":0,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
-        {"$GMRInstance":"v2","%Name":"inst_405C79BA","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_405C79BA","objectId":{"name":"obj_saida_deposito","path":"objects/obj_saida_deposito/obj_saida_deposito.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":32.0,"y":96.0,},
-        {"$GMRInstance":"v2","%Name":"inst_18C7DC47","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_18C7DC47","objectId":{"name":"obj_deposito_menu_principal","path":"objects/obj_deposito_menu_principal/obj_deposito_menu_principal.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":992.0,"y":352.0,},
+        {"$GMRInstance":"v2","%Name":"inst_405C79BA_1","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_405C79BA_1","objectId":{"name":"obj_saida_deposito","path":"objects/obj_saida_deposito/obj_saida_deposito.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":32.0,"y":96.0,},
+        {"$GMRInstance":"v2","%Name":"inst_99BF5CD","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_99BF5CD","objectId":{"name":"obj_Cofre","path":"objects/obj_Cofre/obj_Cofre.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":800.0,"y":224.0,},
+        {"$GMRInstance":"v2","%Name":"inst_79E403A7","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_79E403A7","objectId":{"name":"obj_caixa_dialogo_cofre","path":"objects/obj_caixa_dialogo_cofre/obj_caixa_dialogo_cofre.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":800.0,"y":288.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRBackgroundLayer":"","%Name":"Background","animationFPS":30.0,"animationSpeedType":0,"colour":4294967295,"depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"hspeed":0.0,"htiled":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Background","properties":[],"resourceType":"GMRBackgroundLayer","resourceVersion":"2.0","spriteId":{"name":"spr_worktable","path":"sprites/spr_worktable/spr_worktable.yy",},"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":false,"visible":true,"vspeed":0.0,"vtiled":false,"x":0,"y":0,},
   ],
-  "name":"rm_deposito_interior",
+  "name":"rm_cofre",
   "parent":{
     "name":"Cenas",
     "path":"folders/Cenas.yy",

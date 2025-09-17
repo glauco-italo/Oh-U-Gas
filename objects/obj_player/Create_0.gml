@@ -1,3 +1,5 @@
+
+
 // Evento Create do obj_player
 depth = -y;
 
@@ -59,20 +61,25 @@ velocidade_atual = 0; // A velocidade atual do player
 tanque_combustivel = 100; // Começa com 100 de combustível
 consumo_combustivel = 0.1; // O quanto de combustível é gasto por passo (ajuste para a sua preferência)
 
+// === Variáveis de Upgrades ===
+global.economia_melhorada = false; // Começa como falso
+base_consumo_combustivel = 0.1; // O consumo de gasolina original
+global.capacidade_aumentada = false; // NOVA VARIÁVEL
+numero_butijoes = 0; // NOVO: 0 = sem, 1 = um, 2 = dois
+
 pronto_para_negociar = false; // Começa como falso
 raio_colisao = 550; // Ajuste este valor. É a distância que o player precisa estar do cliente.
 texto_resultado = ""; // Variável para armazenar a mensagem do resultado
 mensagem_atual = "";
 timer_resultado = 0;  // Timer para controlar a exibição da mensagem
 
-taxa_abastecimento = 1; // Quantidade de gasolina adicionada por passo
-custo_abastecimento = 0.3; // Custo por passo
 custo_abastecimento = 10;
-preco_por_litro = 0.15; // O preço de cada "litro" de gasolina
+preco_por_litro = 0.1; // O preço de cada "litro" de gasolina
 
 tem_butijao = true;
 sprite_index = spr_butijao_1;
 custo_butijao = 10;
+
 
 // Interacão
 

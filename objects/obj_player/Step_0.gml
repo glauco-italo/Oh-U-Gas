@@ -3,10 +3,16 @@
 // Lógica de controle principal do jogo com base nos estados
 switch (estado_jogo) {
     case estado.movendo:
-        // === Lógica de Movimento e Consumo de Gasolina ===
+       
+     // === Lógica de Movimento e Consumo de Gasolina ===
         if (keyboard_check(ord("D")) || keyboard_check(ord("A"))) {
             if (tanque_combustivel > 0) {
-                tanque_combustivel -= consumo_combustivel;
+                // AQUI: Verificamos se o upgrade foi comprado
+                if (global.economia_melhorada == true) {
+                    tanque_combustivel -= base_consumo_combustivel * 0.5; // Gasta metade do combustivel
+                } else {
+                    tanque_combustivel -= base_consumo_combustivel; // Gasta o valor normal
+                }
             }
         }
         if (tanque_combustivel > 0) {
