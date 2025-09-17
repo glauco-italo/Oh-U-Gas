@@ -6,7 +6,8 @@ audio_play_sound(gas_music_sound,1,true);
 global.carteira= 0; // Dinheiro que o jogador pode gastar na rua
 global.dinheiro_no_cofre = 0; // Dinheiro guardado
 global.deve_perguntar_dinheiro = false;
-
+global.economia_melhorada_lv2 = false;
+global.capacidade_aumentada_lv2 = false;
 // === JORNADA DE TRABALHO ===
 DURACAO_TURNO_TRABALHO =  120; // Duração do turno em frames (120 segundos)
 global.turno_ativo = true;         // Começa com o turno ativo

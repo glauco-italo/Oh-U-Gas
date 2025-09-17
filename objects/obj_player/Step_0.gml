@@ -5,16 +5,18 @@ switch (estado_jogo) {
     case estado.movendo:
         
        // === Lógica de Movimento e Consumo de Gasolina ===
-        if (keyboard_check(ord("D")) || keyboard_check(ord("A"))) {
-            if (tanque_combustivel > 0) {
-                // AQUI: Verificamos se o upgrade foi comprado
-                if (global.economia_melhorada == true) {
-                    tanque_combustivel -= base_consumo_combustivel * 0.5; // Gasta metade do combustivel
-                } else {
-                    tanque_combustivel -= base_consumo_combustivel; // Gasta o valor normal
-                }
-            }
+if (keyboard_check(ord("D")) || keyboard_check(ord("A"))) {
+    if (tanque_combustivel > 0) {
+        // NOVO: Lógica para os dois niveis de upgrade de economia
+        if (global.economia_melhorada_lv2 == true) {
+            tanque_combustivel -= base_consumo_combustivel * 0.25; // Gasta 75% a menos
+        } else if (global.economia_melhorada == true) {
+            tanque_combustivel -= base_consumo_combustivel * 0.5; // Gasta 50% a menos
+        } else {
+            tanque_combustivel -= base_consumo_combustivel; // Gasta o valor normal
         }
+    }
+}
         if (tanque_combustivel > 0) {
             var direcao_input = 0;
             
@@ -170,41 +172,44 @@ if (keyboard_check_pressed(ord("F"))) {
         
         // --- Lógica de Venda ---
         if (keyboard_check_pressed(ord("D")) || keyboard_check_pressed(ord("A"))) {
-            var comprador_proximo = instance_nearest(x, y, obj_comprador);
-            
-            // CORREÇÃO: Verifica se o jogador TEM um butijão para vender
-            if (numero_butijoes > 0) {
-                if (aceitou) {
-                    global.carteira += valor_venda;
-                    texto_resultado = "O cliente aceitou! \nVoce ganhou R$ " + string(valor_venda) + "!";
-                    
-                    // REDUZ O NÚMERO DE BUTIJÕES E ATUALIZA O SPRITE
-                    numero_butijoes--;
-                    if (numero_butijoes == 1) {
-                        sprite_index = spr_butijao_1;
-                    } else if (numero_butijoes == 0) {
-                        sprite_index = spr_sem_butijao;
-                    }
-
-                    if (comprador_proximo != noone) {
-                        comprador_proximo.sprite_index = spr_comprador_butijao_1;
-                    }
+        var comprador_proximo = instance_nearest(x, y, obj_comprador);
+        
+        if (numero_butijoes > 0) {
+            if (aceitou) {
+                global.carteira += valor_venda;
+                texto_resultado = "O cliente aceitou! \nVoce ganhou R$ " + string(valor_venda) + "!";
+                
+                // NOVO: LÓGICA DE SPRITE ATUALIZADA (VENDA)
+                numero_butijoes--;
+                if (global.capacidade_aumentada_lv2) {
+                    if (numero_butijoes == 2) sprite_index = spr_butijao_3_B;
+                    else if (numero_butijoes == 1) sprite_index = spr_butijao_3_C;
+                    else if (numero_butijoes == 0) sprite_index = spr_sem_butijao;
+                } else if (global.capacidade_aumentada) {
+                    if (numero_butijoes == 1) sprite_index = spr_butijao_1;
+                    else if (numero_butijoes == 0) sprite_index = spr_sem_butijao;
                 } else {
-                    texto_resultado = "O cliente nao aceitou. \nVoce nao ganhou nada.";
+                    if (numero_butijoes == 0) sprite_index = spr_sem_butijao;
+                }
+
+                if (comprador_proximo != noone) {
+                    comprador_proximo.sprite_index = spr_comprador_butijao_1;
                 }
             } else {
-                 // O jogador não tem butijão para vender
-                 texto_resultado = "Voce nao tem butijao para vender!";
+                texto_resultado = "O cliente nao aceitou. \nVoce nao ganhou nada.";
             }
-            
-            if (comprador_proximo != noone) {
-                comprador_proximo.estado_comprador = "pronto_para_sair"; 
-            }
-            
-            estado_jogo = estado.resultado_negociacao;
-            timer_resultado = 120;
+        } else {
+            texto_resultado = "Voce nao tem butijao para vender!";
         }
-        break;
+        
+        if (comprador_proximo != noone) {
+            comprador_proximo.estado_comprador = "pronto_para_sair";    
+        }
+        
+        estado_jogo = estado.resultado_negociacao;
+        timer_resultado = 120;
+    }
+    break;
 
     // === Lógica de Resultado da Negociação ===
     case estado.resultado_negociacao:
@@ -237,54 +242,62 @@ if (keyboard_check_pressed(ord("F"))) {
         }
         break;
 
-    // === Lógica de Compra de Botijão ===
-    case estado.comprando_butijao:
-        if (keyboard_check_pressed(ord("A"))) {
-            // CORREÇÃO: O custo é o mesmo, mas a quantidade de butijões muda
-            var butijoes_para_comprar = 1;
-            var max_butijoes = 1;
+    // === Lógica de Compra de Botijão (TOTALMENTE ATUALIZADA) ===
+// === Lógica de Compra de Botijão (CORRIGIDO) ===
+case estado.comprando_butijao:
+    if (keyboard_check_pressed(ord("A"))) {
+        // Define a capacidade maxima com base nos upgrades
+        var max_butijoes = 1;
+        if (global.capacidade_aumentada) {
+            max_butijoes = 2;
+        }
+        if (global.capacidade_aumentada_lv2) {
+            max_butijoes = 3;
+        }
 
-            if (global.capacidade_aumentada) {
-                max_butijoes = 2;
-                butijoes_para_comprar = 2; // O "pulo do gato": compra 2 de uma vez
-            }
+        // Calcula quantos botijões faltam para encher a capacidade total
+        var butijoes_faltando = max_butijoes - numero_butijoes;
+        var custo_total_compra =  custo_butijao;
 
-            // Se a capacidade máxima ainda não foi atingida
-            if (numero_butijoes < max_butijoes) {
-                if (global.carteira >= custo_butijao) {
-                    global.carteira -= custo_butijao;
-                    numero_butijoes = butijoes_para_comprar;
-                    
-                    // Atualiza o sprite com base no novo número de butijões
-                    if (numero_butijoes == 1) {
-                        sprite_index = spr_butijao_1;
-                    } else if (numero_butijoes == 2) {
-                        sprite_index = spr_butijao_2;
-                    }
-                    
-                    mensagem_atual = "Voce comprou butijoes!";
-                    estado_jogo = estado.mensagem;
-                    
-                    if (instance_exists(obj_controlador_compradores)) {
-                        var controlador = instance_find(obj_controlador_compradores, 0);
-                        if (controlador != noone) {
-                            controlador.timer_comprador = irandom_range(controlador.tempo_min_passos, controlador.tempo_max_passos);
-                        }
-                    }
+        // Se a capacidade máxima ainda não foi atingida
+        if (numero_butijoes < max_butijoes) {
+            if (global.carteira >= custo_total_compra) {
+                global.carteira -= custo_total_compra;
+                // Preenche a capacidade de uma vez só!
+                numero_butijoes = max_butijoes;
+                
+                // Atualiza o sprite com base no novo número de butijões
+                if (global.capacidade_aumentada_lv2) {
+                    sprite_index = spr_butijao_3_A;
+                } else if (global.capacidade_aumentada) {
+                    sprite_index = spr_butijao_2;
                 } else {
-                    mensagem_atual = "Voce nao tem dinheiro \npara comprar o butijao!";
-                    estado_jogo = estado.mensagem;
+                    sprite_index = spr_butijao_1;
+                }
+                
+                mensagem_atual = "Voce comprou " + string(butijoes_faltando) + " butijao(oes)! \nCusto total: R$" + string(custo_total_compra);
+                estado_jogo = estado.mensagem;
+            
+                if (instance_exists(obj_controlador_compradores)) {
+                    var controlador = instance_find(obj_controlador_compradores, 0);
+                    if (controlador != noone) {
+                        controlador.timer_comprador = irandom_range(controlador.tempo_min_passos, controlador.tempo_max_passos);
+                    }
                 }
             } else {
-                mensagem_atual = "Voce ja atingiu a capacidade maxima!";
+                mensagem_atual = "Voce nao tem dinheiro \npara comprar " + string(butijoes_faltando) + " butijao(oes)! \nCusto total: R$" + string(custo_total_compra);
                 estado_jogo = estado.mensagem;
             }
+        } else {
+            mensagem_atual = "Voce ja atingiu a capacidade maxima!";
+            estado_jogo = estado.mensagem;
         }
-        if (keyboard_check_pressed(vk_escape)) {
-            estado_jogo = estado.movendo;
-        }
-        break;
-        
+    }
+    if (keyboard_check_pressed(vk_escape)) {
+        estado_jogo = estado.movendo;
+    }
+    break;
+    
     // === NOVO: Lógica de Exibição de Mensagem ===
     case estado.mensagem:
         if (keyboard_check_pressed(vk_escape)) {
