@@ -61,7 +61,7 @@ draw_set_color(c_white);
 
 switch (estado_jogo) {
     case estado.negociando:
-        if (tem_butijao) {
+        if (numero_butijoes > 0) {
             draw_text(msg_x, msg_y - 25, "Cliente! \nOfereca um preco:");
             draw_text(msg_x - 70, msg_y + 25, "[A] R$20");
             draw_text(msg_x + 70, msg_y + 25, "[D] R$50");
@@ -82,22 +82,21 @@ switch (estado_jogo) {
     
     case estado.comprando_butijao:
         draw_text(msg_x, msg_y - 25, "Bem vindo ao deposito de gas!");
-        if (!tem_butijao) {
-            draw_text(msg_x, msg_y + 5, "[A] Comprar butijao (R$" + string(custo_butijao) + ")");
+        // CORREÇÃO: Inverte a lógica para exibir a mensagem correta
+        if (numero_butijoes < global.capacidade_aumentada ? 2 : 1) { // Verifica se ainda cabe butijão
+             draw_text(msg_x, msg_y + 5, "[A] Comprar butijao (R$" + string(custo_butijao) + ")");
         } else {
-            draw_text(msg_x, msg_y + 5, "Voce ja tem um butijao!");
+            draw_text(msg_x, msg_y + 5, "Voce ja atingiu a capacidade maxima!");
         }
         draw_text(msg_x, msg_y + 35, "Pressione ESC para sair.");
         break;
     
-     // === NOVO: Mensagem Dinâmica para Abastecer e Comprar Butijão ===
+    // === NOVO: Mensagem Dinâmica para Abastecer e Comprar Butijão ===
     case estado.mensagem:
         draw_text(msg_x, msg_y - 25, mensagem_atual);
         draw_text(msg_x, msg_y + 35, "Pressione ESC para sair.");
         break;
 }
-
-
 
 // === Mensagem de Interação (CORRIGIDA) ===
 // AQUI ESTÁ A SOLUÇÃO: Verificamos se a instância ainda existe ANTES de acessá-la.

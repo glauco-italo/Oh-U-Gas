@@ -19,19 +19,23 @@ if (obj_player.tanque_combustivel > 0) {
         }
     }
 
-    // Cria um comprador somente se não tiver nenhum na tela ainda E não estiver perto do depósito
+    // Cria um comprador somente se...
     if (timer_comprador <= 0 
-        && obj_player.tem_butijao 
-        && obj_player.estado_jogo == estado.movendo 
-        && !local_especial_proximo
-        && !is_deposito_proximo // NOVO: Impede a criação perto do depósito
-        && instance_number(obj_comprador) == 0) 
+        // ...o jogador tiver butijões para vender (AGORA USA O NOVO CONTADOR)
+        && obj_player.numero_butijoes > 0
+        // ...o jogador estiver em estado de movimento
+        && obj_player.estado_jogo == estado.movendo
+        // ...não houver um comprador já na tela
+        && !instance_exists(obj_comprador)
+        // ...e não estiver perto de um depósito ou posto
+        && !local_especial_proximo)
     {
         var pos_x_fixa = 250;
         var pos_y_fixa = 111;
 
         instance_create_layer(pos_x_fixa, pos_y_fixa, "Instances", obj_comprador);
-
+        
+        // Reinicia o temporizador
         timer_comprador = irandom_range(tempo_min_passos, tempo_max_passos);
     }
 }

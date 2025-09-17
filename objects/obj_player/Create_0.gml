@@ -63,9 +63,16 @@ consumo_combustivel = 0.1; // O quanto de combustível é gasto por passo (ajust
 
 // === Variáveis de Upgrades ===
 global.economia_melhorada = false; // Começa como falso
-base_consumo_combustivel = 0.1; // O consumo de gasolina original
+base_consumo_combustivel = 0.05; // O consumo de gasolina original
 global.capacidade_aumentada = false; // NOVA VARIÁVEL
-numero_butijoes = 0; // NOVO: 0 = sem, 1 = um, 2 = dois
+numero_butijoes = 1; // CORREÇÃO: Começa com 1 butijão
+// Define o sprite inicial com base no número de butijões
+if (numero_butijoes == 1) {
+    sprite_index = spr_butijao_1;
+} else if (numero_butijoes == 0) {
+    sprite_index = spr_sem_butijao;
+}
+
 
 pronto_para_negociar = false; // Começa como falso
 raio_colisao = 550; // Ajuste este valor. É a distância que o player precisa estar do cliente.
