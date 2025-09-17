@@ -55,24 +55,20 @@ switch (estado_jogo) {
         global.velocidade_fundo = velocidade_atual;
     
     
-    // NOVO: Lógica para fazer o comprador sair
-    var comprador_aguardando = instance_nearest(x, y, obj_comprador);
-    if (comprador_aguardando != noone && comprador_aguardando.estado_comprador == "pronto_para_sair") {
-        comprador_aguardando.estado_comprador = "saindo";
+        // NOVO: Lógica para fazer o comprador sair
+        var comprador_aguardando = instance_nearest(x, y, obj_comprador);
+        if (comprador_aguardando != noone && comprador_aguardando.estado_comprador == "pronto_para_sair") {
+            comprador_aguardando.estado_comprador = "saindo";
     
-        // NOVO CÓDIGO: Usa a direção de movimento real do player
-if (direcao_input > 0) { // Player indo para a direita
-    comprador_aguardando.direcao_saida = -1;
-} else if (direcao_input < 0) { // Player indo para a esquerda
-    comprador_aguardando.direcao_saida = 1;
-} else {
-    // Caso o jogador não esteja se movendo, o comprador não se move
-    comprador_aguardando.direcao_saida = 0;
-}
-}
-    
-    
-    
+            if (direcao_input > 0) { // Player indo para a direita
+                comprador_aguardando.direcao_saida = -1;
+            } else if (direcao_input < 0) { // Player indo para a esquerda
+                comprador_aguardando.direcao_saida = 1;
+            } else {
+                comprador_aguardando.direcao_saida = 0;
+            }
+        }
+     
         // Lógica de detecção de cliente para iniciar negociação
         var cliente_proximo = instance_nearest(x, y, obj_comprador);
         if (cliente_proximo != noone && cliente_proximo.estado_comprador == "esperando" && distance_to_object(cliente_proximo) < raio_colisao) {
@@ -109,12 +105,18 @@ if (direcao_input > 0) { // Player indo para a direita
             }
         }
         break;
+
     // === Lógica de Negociação ===
     case estado.negociando:
         if (keyboard_check_pressed(vk_escape)) {
             texto_resultado = "Voce desistiu da venda!";
             estado_jogo = estado.resultado_negociacao;
             timer_resultado = 60; // 1 segundo
+            
+            var comprador_proximo = instance_nearest(x, y, obj_comprador);
+            if (comprador_proximo != noone) {
+                comprador_proximo.estado_comprador = "pronto_para_sair";
+            }
             break;
         }
         var valor_venda = 0;
@@ -138,20 +140,23 @@ if (direcao_input > 0) { // Player indo para a direita
         }
         
         if (keyboard_check_pressed(ord("D")) || keyboard_check_pressed(ord("A"))) {
+            var comprador_proximo = instance_nearest(x, y, obj_comprador);
             if (aceitou) {
                 global.carteira += valor_venda;
                 texto_resultado = "O cliente aceitou! \n Voce ganhou R$ " + string(valor_venda) + "!";
                 sprite_index = spr_sem_butijao;
                 tem_butijao = false;
                 
-                var comprador_vendido = instance_nearest(x, y, obj_comprador);
-                if (comprador_vendido != noone) {
-                    comprador_vendido.sprite_index = spr_comprador_butijao_1;
-                   comprador_vendido.estado_comprador = "pronto_para_sair"; 
-
+                if (comprador_proximo != noone) {
+                    comprador_proximo.sprite_index = spr_comprador_butijao_1;
                 }
             } else {
                 texto_resultado = "O cliente nao aceitou. \n Voce nao ganhou nada.";
+            }
+            
+            // NOVO: Manda o comprador embora independente do resultado
+            if (comprador_proximo != noone) {
+                comprador_proximo.estado_comprador = "pronto_para_sair"; 
             }
             
             estado_jogo = estado.resultado_negociacao;
