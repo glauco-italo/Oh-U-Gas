@@ -47,7 +47,7 @@ switch (upgrade_disponivel) {
 
 // Desenha o botão de upgrade
 if (upgrade_disponivel != "nenhum") {
-    draw_set_color(c_lime);
+    draw_set_color(c_green);
     draw_roundrect(button_x - button_width / 2, button_y - button_height / 2, button_x + button_width / 2, button_y + button_height / 2, false);
     draw_set_color(c_black);
     draw_roundrect(button_x - button_width / 2, button_y - button_height / 2, button_x + button_width / 2, button_y + button_height / 2, true);

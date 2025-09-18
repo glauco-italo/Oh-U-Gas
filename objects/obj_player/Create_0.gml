@@ -18,6 +18,7 @@ enum estado {
     comprando_butijao,
     game_over,
     mensagem,
+    menu_deposito,
     
 }
 
@@ -65,11 +66,11 @@ consumo_combustivel = 0.1; // O quanto de combustível é gasto por passo (ajust
 global.economia_melhorada = false; // Começa como falso
 base_consumo_combustivel = 0.05; // O consumo de gasolina original
 global.capacidade_aumentada = false; // NOVA VARIÁVEL
-numero_butijoes = 1; // CORREÇÃO: Começa com 1 butijão
+global.numero_butijoes = 1; // CORREÇÃO: Começa com 1 butijão
 // Define o sprite inicial com base no número de butijões
-if (numero_butijoes == 1) {
+if (global.numero_butijoes == 1) {
     sprite_index = spr_butijao_1;
-} else if (numero_butijoes == 0) {
+} else if (global.numero_butijoes == 0) {
     sprite_index = spr_sem_butijao;
 }
 

@@ -24,7 +24,7 @@ if (x <= -sprite_width || x >= room_width) {
     var chance_deposito = 5;
     var chance_cliente = 20;
     
-    if (instance_exists(obj_player) && !obj_player.numero_butijoes > 0) {
+    if (instance_exists(obj_player) && !global.numero_butijoes > 0) {
         chance_deposito = 40;
         chance_posto = 10;
     }

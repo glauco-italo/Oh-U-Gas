@@ -17,3 +17,12 @@ upgrades_x = box_x + 120;
 upgrades_y = box_y;
 upgrades_width = 180;
 upgrades_height = 60;
+
+// NOVO: Botão Comprar Butijão
+comprar_butijao_x = box_x;
+comprar_butijao_y = box_y + 80; // Posiciona abaixo dos outros
+comprar_butijao_width = 180;
+comprar_butijao_height = 60;
+
+// NOVO: Custo do butijão
+custo_butijao = 10;

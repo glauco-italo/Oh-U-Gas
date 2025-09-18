@@ -80,7 +80,7 @@ if (keyboard_check(ord("D")) || keyboard_check(ord("A"))) {
         var cliente_proximo = instance_nearest(x, y, obj_comprador);
         if (cliente_proximo != noone && cliente_proximo.estado_comprador == "esperando" && distance_to_object(cliente_proximo) < raio_colisao) {
             // CORREÇÃO: Usa o contador para verificar se tem butijão para vender
-            if (numero_butijoes > 0) {
+            if (global.numero_butijoes > 0) {
                 velocidade_atual = 0;
                 global.velocidade_fundo = 0;
                 estado_jogo = estado.negociando;
@@ -174,22 +174,22 @@ if (keyboard_check_pressed(ord("F"))) {
         if (keyboard_check_pressed(ord("D")) || keyboard_check_pressed(ord("A"))) {
         var comprador_proximo = instance_nearest(x, y, obj_comprador);
         
-        if (numero_butijoes > 0) {
+        if (global.numero_butijoes > 0) {
             if (aceitou) {
                 global.carteira += valor_venda;
                 texto_resultado = "O cliente aceitou! \nVoce ganhou R$ " + string(valor_venda) + "!";
                 
                 // NOVO: LÓGICA DE SPRITE ATUALIZADA (VENDA)
-                numero_butijoes--;
+                global.numero_butijoes--;
                 if (global.capacidade_aumentada_lv2) {
-                    if (numero_butijoes == 2) sprite_index = spr_butijao_3_B;
-                    else if (numero_butijoes == 1) sprite_index = spr_butijao_3_C;
-                    else if (numero_butijoes == 0) sprite_index = spr_sem_butijao;
+                    if (global.numero_butijoes == 2) sprite_index = spr_butijao_3_B;
+                    else if (global.numero_butijoes == 1) sprite_index = spr_butijao_3_C;
+                    else if (global.numero_butijoes == 0) sprite_index = spr_sem_butijao;
                 } else if (global.capacidade_aumentada) {
-                    if (numero_butijoes == 1) sprite_index = spr_butijao_1;
-                    else if (numero_butijoes == 0) sprite_index = spr_sem_butijao;
+                    if (global.numero_butijoes == 1) sprite_index = spr_butijao_1;
+                    else if (global.numero_butijoes == 0) sprite_index = spr_sem_butijao;
                 } else {
-                    if (numero_butijoes == 0) sprite_index = spr_sem_butijao;
+                    if (global.numero_butijoes == 0) sprite_index = spr_sem_butijao;
                 }
 
                 if (comprador_proximo != noone) {
@@ -256,15 +256,15 @@ case estado.comprando_butijao:
         }
 
         // Calcula quantos botijões faltam para encher a capacidade total
-        var butijoes_faltando = max_butijoes - numero_butijoes;
+        var butijoes_faltando = max_butijoes - global.numero_butijoes;
         var custo_total_compra =  custo_butijao;
 
         // Se a capacidade máxima ainda não foi atingida
-        if (numero_butijoes < max_butijoes) {
+        if (global.numero_butijoes < max_butijoes) {
             if (global.carteira >= custo_total_compra) {
                 global.carteira -= custo_total_compra;
                 // Preenche a capacidade de uma vez só!
-                numero_butijoes = max_butijoes;
+                global.numero_butijoes = max_butijoes;
                 
                 // Atualiza o sprite com base no novo número de butijões
                 if (global.capacidade_aumentada_lv2) {

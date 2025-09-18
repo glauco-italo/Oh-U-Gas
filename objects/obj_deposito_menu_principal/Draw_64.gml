@@ -3,7 +3,7 @@
 var box_x = room_width / 2;
 var box_y = room_height / 2;
 var box_width = 500;
-var box_height = 200;
+var box_height = 250;
 
 // Desenha a caixa de fundo
 draw_set_color(c_black);
@@ -15,24 +15,36 @@ draw_set_font(fnt_carteira);
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 draw_set_color(c_white);
-draw_text(box_x, box_y - 60, "DEPOSITO");
+draw_text(box_x, box_y - 90, "DEPOSITO");
 
 // Desenha o botão "Cofres"
-draw_set_color(c_lime);
-draw_roundrect_ext(cofre_x - cofre_width / 2, cofre_y - cofre_height / 2, cofre_x + cofre_width / 2, cofre_y + cofre_height / 2, 10, 10, false);
+draw_set_color(c_green);
+draw_roundrect_ext(cofre_x - cofre_width / 2, cofre_y - cofre_height / 2, cofre_x + cofre_width / 2, cofre_y + cofre_height / 2, 20, 20, false);
 draw_set_color(c_black);
-draw_roundrect_ext(cofre_x - cofre_width / 2, cofre_y - cofre_height / 2, cofre_x + cofre_width / 2, cofre_y + cofre_height / 2, 10, 10, true);
+draw_roundrect_ext(cofre_x - cofre_width / 2, cofre_y - cofre_height / 2, cofre_x + cofre_width / 2, cofre_y + cofre_height / 2, 20, 20, true);
 draw_set_color(c_white);
 draw_text(cofre_x, cofre_y, "COFRE");
 
 // Desenha o botão "Upgrades"
-draw_set_color(c_lime);
-draw_roundrect_ext(upgrades_x - upgrades_width / 2, upgrades_y - upgrades_height / 2, upgrades_x + upgrades_width / 2, upgrades_y + upgrades_height / 2, 10, 10, false);
+draw_set_color(c_green);
+draw_roundrect_ext(upgrades_x - upgrades_width / 2, upgrades_y - upgrades_height / 2, upgrades_x + upgrades_width / 2, upgrades_y + upgrades_height / 2, 20, 20, false);
 draw_set_color(c_black);
-draw_roundrect_ext(upgrades_x - upgrades_width / 2, upgrades_y - upgrades_height / 2, upgrades_x + upgrades_width / 2, upgrades_y + upgrades_height / 2, 10, 10, true);
+draw_roundrect_ext(upgrades_x - upgrades_width / 2, upgrades_y - upgrades_height / 2, upgrades_x + upgrades_width / 2, upgrades_y + upgrades_height / 2, 20, 20, true);
 draw_set_color(c_white);
 draw_text(upgrades_x, upgrades_y, "UPGRADES");
+
+// NOVO: Desenha o botão "Comprar Butijão"
+draw_set_color(c_green);
+draw_roundrect_ext(540, comprar_butijao_y - comprar_butijao_height / 2, 810, comprar_butijao_y + comprar_butijao_height / 2, 20, 20, false);
+draw_set_color(c_black);
+draw_roundrect_ext(540, comprar_butijao_y - comprar_butijao_height / 2, 810, comprar_butijao_y + comprar_butijao_height / 2, 0, 10, true);
+draw_set_color(c_white);
+draw_text_ext_transformed(680, 450, "Comprar Butijao Custo: \nR$10 cada", 20, 500, 1, 1, 0);
 
 // Instruções para sair
 draw_set_halign(fa_right);
 draw_text(room_width - 20, room_height - 20, "Pressione ESC para voltar");
+
+// Lembrete: Se o seu jogo não tiver um obj_player na sala do depósito,
+// pode ser necessário encontrar ele de outra forma (por exemplo, usando instance_find).
+// O código acima já inclui essa verificação.

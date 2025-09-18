@@ -109,9 +109,9 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"rm_game","path":"rooms/rm_game/rm_game.yy",},},
-    {"roomId":{"name":"rm_game_over","path":"rooms/rm_game_over/rm_game_over.yy",},},
     {"roomId":{"name":"rm_deposito_interior","path":"rooms/rm_deposito_interior/rm_deposito_interior.yy",},},
     {"roomId":{"name":"rm_cofre","path":"rooms/rm_cofre/rm_cofre.yy",},},
+    {"roomId":{"name":"rm_game_over","path":"rooms/rm_game_over/rm_game_over.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[
